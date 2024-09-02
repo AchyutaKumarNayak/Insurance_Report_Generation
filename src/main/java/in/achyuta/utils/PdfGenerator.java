@@ -20,12 +20,13 @@ import jakarta.servlet.ServletResponse;
 @Component
 public class PdfGenerator {
 	public void generatePdf(ServletResponse response,List<CitizenInfo> plans) throws Exception {
-		
+		//Create document object for pdf of paper size A4
         Document document=new Document(PageSize.A4);
-		
+		//Create PdfWriter object for doc and response from browser
 		PdfWriter.getInstance(document, response.getOutputStream());
+		//Create PdfWriter object for doc and create one file in local
 		PdfWriter.getInstance(document, new FileOutputStream(new File("plans.pdf")));
-		
+		//open the document for writing
 		document.open();
 		
 		// Creating font
@@ -36,14 +37,14 @@ public class PdfGenerator {
 	    Paragraph heading = new Paragraph("Citizen's Plan", fontTiltle);
 	    // Aligning the paragraph in the document
 	    heading.setAlignment(Paragraph.ALIGN_CENTER);
+	    
 	    // Adding the created paragraph in the document
-		
 		document.add(heading);
-		
+		//Creating PdfPTable object with required no. of columns
 		PdfPTable table = new PdfPTable(8);
-		
+		//padding from header
 	    table.setSpacingBefore(5);
-		
+		//Add headers
 		table.addCell("Id");
 		table.addCell("Holder Name");
 		table.addCell("Plan Name");
@@ -53,7 +54,7 @@ public class PdfGenerator {
 		table.addCell("End Date");
 		table.addCell("Benefit Amt");
 		
-		
+		//fetch the data from ArrayList and store this in corresponding column
 		for(CitizenInfo plan:plans) {
 			
 			table.addCell(String.valueOf(plan.getId()));
@@ -79,8 +80,9 @@ public class PdfGenerator {
 			
 		}
 		
+		//Add the table in document object 
 		document.add(table);
-		
+		//Then close the document
 		document.close();
 		
 	}
